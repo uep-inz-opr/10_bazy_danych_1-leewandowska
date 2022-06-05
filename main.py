@@ -23,19 +23,18 @@ class ReportGenerator:
     self.report_text = None
     self.escape_string = escape_string
 
-  def generate_report(self, user_id):
+  def generate_report(self):
     cursor = self.connection.cursor()
     sql_query = f"Select sum(duration) from polaczenia"
-    args = (user_id,)
-    cursor.execute(sql_query, args)
+    cursor.execute(sql_query)
     self.result = cursor.fetchone()[0]
     
-
+    
   def get_report(self):	
     return self.result
 
 
 if __name__ == "__main__":
  rg = ReportGenerator(sqlite_con, escape_string="?")
- rg.generate_report(283)
+ rg.generate_report()
  rg.get_report()
