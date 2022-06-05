@@ -1,16 +1,17 @@
 import csv, sqlite3
+
 sqlite_con = sqlite3.connect(":memory:", detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+def tworzenie_widoku(plik):
+ cur = sqlite_con.cursor()
 
-cur = sqlite_con.cursor()
-plik = input()
 
-cur.execute('''CREATE TABLE polaczenia (from_subscriber data_type INTEGER, 
+ cur.execute('''CREATE TABLE polaczenia (from_subscriber data_type INTEGER, 
                   to_subscriber data_type INTEGER, 
                   datetime data_type timestamp, 
                   duration data_type INTEGER , 
                   celltower data_type INTEGER);''') 
 
-with open(plik,'r') as fin: 
+ with open(plik,'r') as fin: 
     reader = csv.reader(fin, delimiter = ";") # comma is default delimiter
     next(reader, None)  # skip the headers
     rows = [x for x in reader]
@@ -33,8 +34,8 @@ class ReportGenerator:
   def get_report(self):	
     return self.result
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
+ tworzenie_widoku(input())
  rg = ReportGenerator(sqlite_con, escape_string="?")
  rg.generate_report()
- rg.get_report()
+ print(rg.get_report())
